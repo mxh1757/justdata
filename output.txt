@@ -1,39 +1,63 @@
-(venv) PS D:\Projects\macrosent> python debug_news.py 
-============================================================
-1. yfinance version
-============================================================
-yfinance: 1.7.0
 
-============================================================
-2. Basic yfinance calls for AAPL
-============================================================
-history() rows: 5
-info longName: Apple Inc.
+⚪ NEUTRAL (0.82) — Why Kodiak Sciences Skyrocketed Today - Yahoo Finance
+Yahoo Finance · 2026-09-29 02:58
 
-============================================================
-3. Raw t.news for AAPL
-============================================================
-type: <class 'list'>
-length: 0
-news is empty/falsy: []
+Summary: Why Kodiak Sciences Skyrocketed Today - Yahoo Finance (full article text couldn't be retrieved — showing headline only)
 
-============================================================
-4. Direct HTTP reachability (plain requests, default UA)
-============================================================
-https://query1.finance.yahoo.com -> status 429, 23 bytes
-https://query2.finance.yahoo.com -> status 429, 23 bytes
+Market interpretation: Classified as neutral sentiment (82% confidence). This headline doesn't carry a strong positive or negative signal on its own and is less likely to be a major price driver by itself.
 
-============================================================
-5. Same, with a browser-like User-Agent
-============================================================
-https://query1.finance.yahoo.com/v1/finance/search?q=AAPL -> status 200, 7770 bytes
-  body preview: {"explains":[],"count":14,"quotes":[{"exchange":"NMS","shortname":"Apple Inc.","quoteType":"EQUITY","symbol":"AAPL","index":"quotes","score":1.45804992E8,"typeDisp":"Equity","longname":"Apple Inc.","e
-https://query2.finance.yahoo.com/v1/finance/search?q=AAPL -> status 200, 7641 bytes
-  body preview: {"explains":[],"count":14,"quotes":[{"exchange":"NMS","shortname":"Apple Inc.","quoteType":"EQUITY","symbol":"AAPL","index":"quotes","score":1.45804992E8,"typeDisp":"Equity","longname":"Apple Inc.","e
+Summarized by local distilbart model. This is a general interpretation of the sentiment classification, not financial advice or a price prediction.
 
-============================================================
-6. curl_cffi impersonation (only if installed)
-============================================================
-curl_cffi news length: 0
+⚪ NEUTRAL (0.94) — MongoDB, Kodiak Sciences, Navitas Semiconductor, Boeing and Nvidia: Why These 5 Stocks Are on Investors' Radars Today - TradingView
+TradingView · 2026-09-29 01:20
+Kodiak Sciences Navitas Semiconductor Boeing
 
-Done. Paste this whole output back.
+Summary: MongoDB, Kodiak Sciences, Navitas Semiconductor, Boeing and Nvidia: Why These 5 Stocks Are on Investors' Radars Today - TradingView (full article text couldn't be retrieved — showing headline only)
+
+Market interpretation: Classified as neutral sentiment (94% confidence). This headline doesn't carry a strong positive or negative signal on its own and is less likely to be a major price driver by itself.
+
+Summarized by local distilbart model. This is a general interpretation of the sentiment classification, not financial advice or a price prediction.
+
+⚪ NEUTRAL (0.94) — Kodiak Sciences Inc. (KOD) stock price, news, quote and history - sg.finance.yahoo.com
+sg.finance.yahoo.com · 2026-09-26 20:34
+Kodiak Sciences Inc. KOD
+
+Summary: Kodiak Sciences Inc. (KOD) stock price, news, quote and history - sg.finance.yahoo.com (full article text couldn't be retrieved — showing headline only)
+
+Market interpretation: Classified as neutral sentiment (94% confidence). This headline doesn't carry a strong positive or negative signal on its own and is less likely to be a major price driver by itself.
+
+Summarized by local distilbart model. This is a general interpretation of the sentiment classification, not financial advice or a price prediction.
+
+⚪ NEUTRAL (0.87) — Results are due Monday from a study of two potential treatments for an age-related eye disease. - Stock Titan
+Stock Titan · 2026-09-29 07:31
+
+🟢 POSITIVE (0.94) — Biotech Stock Kodiak Sciences (Nasdaq: KOD) Leads Nasdaq's Monday Gainers; up 177% - Investorideas.com
+Investorideas.com · 2026-09-29 06:42
+Biotech Stock Kodiak Sciences Investorideas.com
+
+Summary: Biotech Stock Kodiak Sciences (Nasdaq: KOD) Leads Nasdaq's Monday Gainers; up 177% - Investorideas.com (full article text couldn't be retrieved — showing headline only)
+
+Market interpretation: Classified as positive sentiment (94% confidence). News like this is generally associated with favorable investor perception, though whether it actually moves the price depends on broader market conditions and whether it was already expected.
+
+Summarized by local distilbart model. This is a general interpretation of the sentiment classification, not financial advice or a price prediction.
+
+⚪ NEUTRAL (0.69) — KOD Stock Explodes As Phase 3 Catalyst Frenzy Draws Wall Street - timothysykes.com
+timothysykes.com · 2026-09-28 19:03
+KOD Stock
+
+⚪ NEUTRAL (0.86) — KOD Stock Explodes As Phase 3 Countdown Draws Wall Street Firepower - StocksToTrade
+StocksToTrade · 2026-09-28 19:04
+KOD Stock
+
+⚪ NEUTRAL (0.93) — MDB, KOD, NVTS, BA, NVDA: 5 Trending Stocks Today - NVIDIA (NASDAQ:NVDA) - benzinga.com
+benzinga.com · 2026-09-29 01:20
+MDB KOD NVTS BA NVDA
+
+🟢 POSITIVE (0.92) — Kodiak Sciences Stock Soars as Trial Data Boosts Market Confidence - NAI500
+NAI500 · 2026-09-29 07:08
+Kodiak Sciences Stock Soars as Trial Data Boosts Market Confidence - NAI500
+
+⚪ NEUTRAL (0.86) — Why Did KOD, RGEN, BIIB Stocks Rise To 52-Week Highs? - TradingView
+TradingView · 2026-09-29 04:23
+RGEN
+
