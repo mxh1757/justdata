@@ -25,6 +25,7 @@ import yfinance as yf
 import pandas as pd
 import plotly.graph_objects as go
 import hashlib
+import feedparser
 from datetime import datetime, timezone
 
 from sentiment_model import FinancialSentimentAnalyzer
@@ -119,40 +120,62 @@ def _rss_fallback_news(ticker: str, company_name: str = "", limit: int = 10):
     Fallback source for per-ticker news when yfinance's own news endpoint
     fails (as of Sept 2026, Yahoo's underlying xhr/ncp?queryRef=latestNews
     endpoint returns a server-side 500 -- confirmed via direct testing,
-    not fixable client-side). Filters the existing general-market RSS
-    feed (fetch_data.py) down to headlines that mention this ticker or
-    its company name.
+    not fixable client-side).
+
+    Queries Google News' RSS search directly for this ticker/company --
+    a targeted per-ticker search, not a filter over the generic market
+    feed (which only has meaningful hit-rate for large, frequently-
+    covered names). Uses feedparser, already a project dependency.
 
     Returns the same flat shape as the normalized yfinance path, so
     callers don't need to know which source actually served the data.
+
+    Note: Google News RSS links are Google-redirect URLs, not direct
+    publisher links -- this can reduce the hit-rate of the OG-image
+    thumbnail fetch (article_fetch.fetch_og_image) for these items, since
+    it's fetching a Google interstitial page rather than the original
+    article page. Not fixable without resolving each redirect (extra
+    network round-trip per headline), so left as-is for now.
     """
-    headlines = fetch_headlines(limit_per_feed=50)
-    if not headlines:
+    from urllib.parse import quote
+
+    query = f"{company_name or ticker} stock"
+    url = f"https://news.google.com/rss/search?q={quote(query)}&hl=en-US&gl=US&ceid=US:en"
+
+    try:
+        parsed = feedparser.parse(url)
+    except Exception as e:
+        print(f"[warn] Google News RSS fallback failed for {ticker}: {e}")
         return []
 
-    keywords = [ticker.lower()]
-    if company_name:
-        # First word of the company name (e.g. "Apple" from "Apple Inc.")
-        # tends to be the most reliable, low-noise match in headline text.
-        first_word = company_name.split()[0].lower()
-        if len(first_word) > 2:
-            keywords.append(first_word)
+    items = []
+    for entry in parsed.entries[:limit]:
+        title = getattr(entry, "title", "").strip()
+        if not title:
+            continue
+        link = getattr(entry, "link", "")
 
-    matched = [
-        h for h in headlines
-        if any(k in h["title"].lower() for k in keywords)
-    ]
+        source = "Google News"
+        entry_source = getattr(entry, "source", None)
+        if entry_source is not None:
+            source = getattr(entry_source, "title", None) or getattr(entry_source, "value", None) or source
 
-    return [
-        {
-            "title": h["title"],
-            "link": h.get("link", ""),
-            "publisher": h.get("source", ""),
-            "providerPublishTime": None,  # RSS gives an ISO string instead; see published_iso
-            "published_iso": h.get("published"),
-        }
-        for h in matched[:limit]
-    ]
+        published_iso = None
+        if getattr(entry, "published_parsed", None):
+            dt = datetime(*entry.published_parsed[:6], tzinfo=timezone.utc)
+            published_iso = dt.isoformat()
+
+        items.append(
+            {
+                "title": title,
+                "link": link,
+                "publisher": source,
+                "providerPublishTime": None,
+                "published_iso": published_iso,
+            }
+        )
+
+    return items
 
 
 @st.cache_data(ttl=300, show_spinner="Fetching ticker news...")
