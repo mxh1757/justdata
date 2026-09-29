@@ -32,6 +32,7 @@ from sentiment_model import FinancialSentimentAnalyzer
 from news_summarizer import NewsSummarizer, get_market_impact_note
 from fetch_data import fetch_headlines
 from article_fetch import fetch_article_paragraphs, fetch_og_image
+import gnews_resolve
 from llm_summarizer import is_available as llm_available, summarize_article_llm
 import storage
 import ner
@@ -63,7 +64,7 @@ def load_ner():
 @st.cache_data(ttl=86400, show_spinner=False)
 def get_cached_og_image(url: str):
     """Cached for a day -- an article's thumbnail image doesn't change."""
-    return fetch_og_image(url)
+    return fetch_og_image(gnews_resolve.resolve(url))
 
 
 @st.cache_data(ttl=900, show_spinner="Fetching overall market news...")
@@ -542,7 +543,8 @@ if ticker:
                 if st.session_state.headline_visible.get(key):
                     if key not in st.session_state.headline_details:
                         with st.spinner("Summarizing article..."):
-                            paragraphs = fetch_article_paragraphs(item.get("link", ""))
+                            article_url = gnews_resolve.resolve(item.get("link", ""))
+                            paragraphs = fetch_article_paragraphs(article_url)
 
                             if paragraphs:
                                 full_text = " ".join(paragraphs)
@@ -561,10 +563,25 @@ if ticker:
                                         [full_text], max_length=200, min_length=60
                                     )
                             else:
-                                summary = (
-                                    f"{item.get('title', '')} (full article text couldn't be "
-                                    "retrieved -- showing headline only)"
-                                )
+                                # Full article text wasn't retrievable (common
+                                # for Google-News-sourced links, whose redirect
+                                # couldn't be resolved, or paywalled/blocked
+                                # sites). Fall back to synthesizing from the
+                                # other headlines already fetched for this
+                                # ticker, which is more useful than just
+                                # repeating this one headline back.
+                                other_titles = [t for t in titles if t and t != item.get("title", "")]
+                                if other_titles:
+                                    summary = summarizer.summarize_headlines(other_titles[:8])
+                                    summary += (
+                                        " (Full text of this specific article couldn't be "
+                                        "retrieved -- this summary is based on related coverage instead.)"
+                                    )
+                                else:
+                                    summary = (
+                                        f"{item.get('title', '')} (full article text couldn't be "
+                                        "retrieved -- showing headline only)"
+                                    )
                                 used_llm = False
 
                             impact = get_market_impact_note(result["label"], result["score"])
