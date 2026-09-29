@@ -1,0 +1,51 @@
+============================================================
+1. t.news with exceptions unhidden
+============================================================
+DEBUG    Entering post()
+DEBUG     Entering _make_request()
+DEBUG      url=https://finance.yahoo.com/xhr/ncp?queryRef=latestNews&serviceKey=ncp_fin
+DEBUG      params=None
+DEBUG      Entering _get_cookie_and_crumb()
+DEBUG       cookie_mode = 'basic'
+DEBUG       Entering _get_cookie_and_crumb_basic()
+DEBUG        Entering _get_cookie_basic()
+DEBUG         Entering _load_cookie_curlCffi()
+DEBUG         Exiting _load_cookie_curlCffi()
+DEBUG         reusing persistent cookie
+DEBUG        Exiting _get_cookie_basic()
+DEBUG        Entering _get_crumb_basic()
+DEBUG         Entering _get_cookie_basic()
+DEBUG          reusing cookie
+DEBUG         Exiting _get_cookie_basic()
+DEBUG         crumb = 'Y/I.7OZpQfO'
+DEBUG        Exiting _get_crumb_basic()
+DEBUG       Exiting _get_cookie_and_crumb_basic()
+DEBUG      Exiting _get_cookie_and_crumb()
+DEBUG      response code=500
+DEBUG      toggling cookie strategy basic -> csrf
+DEBUG      Entering _get_cookie_and_crumb()
+DEBUG       cookie_mode = 'csrf'
+DEBUG       Entering _get_crumb_csrf()
+DEBUG        Entering _get_cookie_csrf()
+DEBUG         Entering _load_cookie_curlCffi()
+DEBUG         Exiting _load_cookie_curlCffi()
+DEBUG         reusing persistent cookie
+DEBUG        Exiting _get_cookie_csrf()
+DEBUG        crumb = 'Y/I.7OZpQfO'
+DEBUG       Exiting _get_crumb_csrf()
+DEBUG      Exiting _get_cookie_and_crumb()
+DEBUG      response code=500
+DEBUG     Exiting _make_request()
+DEBUG    Exiting post()
+news length: 0
+
+============================================================
+2. Direct POST to the news endpoint (what yfinance calls internally)
+============================================================
+status: 500
+content-type: application/json; charset=utf-8
+body length: 35
+body preview (first 500 chars):
+{"message":"Internal Server Error"}
+
+Done. Paste this whole output back.
