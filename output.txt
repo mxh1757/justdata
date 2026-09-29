@@ -1,0 +1,39 @@
+(venv) PS D:\Projects\macrosent> python debug_news.py 
+============================================================
+1. yfinance version
+============================================================
+yfinance: 1.7.0
+
+============================================================
+2. Basic yfinance calls for AAPL
+============================================================
+history() rows: 5
+info longName: Apple Inc.
+
+============================================================
+3. Raw t.news for AAPL
+============================================================
+type: <class 'list'>
+length: 0
+news is empty/falsy: []
+
+============================================================
+4. Direct HTTP reachability (plain requests, default UA)
+============================================================
+https://query1.finance.yahoo.com -> status 429, 23 bytes
+https://query2.finance.yahoo.com -> status 429, 23 bytes
+
+============================================================
+5. Same, with a browser-like User-Agent
+============================================================
+https://query1.finance.yahoo.com/v1/finance/search?q=AAPL -> status 200, 7770 bytes
+  body preview: {"explains":[],"count":14,"quotes":[{"exchange":"NMS","shortname":"Apple Inc.","quoteType":"EQUITY","symbol":"AAPL","index":"quotes","score":1.45804992E8,"typeDisp":"Equity","longname":"Apple Inc.","e
+https://query2.finance.yahoo.com/v1/finance/search?q=AAPL -> status 200, 7641 bytes
+  body preview: {"explains":[],"count":14,"quotes":[{"exchange":"NMS","shortname":"Apple Inc.","quoteType":"EQUITY","symbol":"AAPL","index":"quotes","score":1.45804992E8,"typeDisp":"Equity","longname":"Apple Inc.","e
+
+============================================================
+6. curl_cffi impersonation (only if installed)
+============================================================
+curl_cffi news length: 0
+
+Done. Paste this whole output back.
